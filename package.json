@@ -4,6 +4,8 @@
     "build": "node bundler.js"
   },
   "devDependencies": {
-    "terser": "5.38.2"
+    "acorn": "8.14.1",
+    "acorn-walk": "8.3.4",
+    "terser": "5.39.0"
   }
 }

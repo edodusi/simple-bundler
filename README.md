@@ -7,12 +7,13 @@ A lightweight JavaScript module bundler created for learning purposes. This bund
 ## Features
 
 - ES Modules support (import/export)
+- AST-based parsing and transformation using Acorn
 - Support for both default and named exports
 - Dependency graph generation
 - Plugin system
 - Configuration file support
 - Built-in Terser minification plugin
-- Relative path resolution
+- Proper path resolution
 - Command-line interface
 
 ## Installation
@@ -58,11 +59,12 @@ node bundler.js my-config.js
 
 The bundler performs these main steps:
 
-1. Reads the entry file and parses its dependencies
-2. Builds a dependency graph by recursively analyzing imports
-3. Transforms ES Module syntax to CommonJS
-4. Applies plugins (e.g., minification)
-5. Generates a single bundle file
+1. Parses code into an Abstract Syntax Tree (AST) using Acorn
+2. Analyzes the AST to extract imports and exports
+3. Builds a dependency graph by recursively following imports
+4. Transforms ES Module syntax to CommonJS through AST-based transformations
+5. Applies plugins (e.g., minification)
+6. Generates a single bundle file with a module loader
 
 ## Plugin System
 
@@ -88,14 +90,14 @@ function createMyPlugin() {
 
 ## Limitations
 
-This is a learning project and has some limitations:
+Even though this is a functional bundler, it has some limitations:
 
-- Uses regex for parsing (instead of proper AST parsing)
-- Limited support for complex module scenarios
-- No source maps
+- No source maps support
+- Limited handling of node_modules resolution
 - No code splitting
 - No tree shaking
 - No support for non-JavaScript assets
+- Limited handling of complex module patterns
 
 ## Contributing
 

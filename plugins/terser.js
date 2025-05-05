@@ -1,6 +1,6 @@
 const { minify } = require('terser');
 
-function createTerserPlugin(options = {}) {
+function terser(options = {}) {
     return {
         name: 'terser',
         // Implement the bundle hook
@@ -16,4 +16,4 @@ function createTerserPlugin(options = {}) {
     };
 }
 
-module.exports = createTerserPlugin;
+module.exports = terser;

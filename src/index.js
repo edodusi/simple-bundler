@@ -1,39 +1,86 @@
 // Import specific items from each module
 import { appName, formatDate, config as utilsConfig } from './utils.js';
 import add, { subtract, calculatorConfig } from './calculator.js';
-import { validateEmail, validatorState, formatDate as formatDateISO } from './validator.js';
+import { validateEmail, validatePhone, validatorState, formatDate as formatDateISO } from './validator.js';
 import {
     formatCurrency,
     formatPercent,
     formatterConfig
 } from './formatter.js';
 
-console.log('Starting application...');
+// Initialize app when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('Starting application...');
 
-// Now we have clear separation and no naming conflicts
-console.log('App Name:', appName);
+    // Set app name and version
+    document.getElementById('app-name').textContent = appName;
+    document.getElementById('app-version').textContent = 'v' + utilsConfig.version;
 
-// Using date formatter
-const date = new Date();
-console.log('Formatted Date:', formatDate(date));
-console.log('ISO Date:', formatDateISO(date));
+    // Initialize date displays
+    const date = new Date();
+    document.getElementById('current-date').textContent = 'Today is ' + formatDate(date);
+    document.getElementById('standard-date').textContent = formatDate(date);
+    document.getElementById('iso-date').textContent = formatDateISO(date);
 
-// Using calculator functions
-const sum = add(5, 3);
-console.log('Sum:', sum);
-console.log('Difference:', subtract(10, 4));
+    // Calculator functionality
+    document.getElementById('add-btn').addEventListener('click', () => {
+        const num1 = parseFloat(document.getElementById('num1').value);
+        const num2 = parseFloat(document.getElementById('num2').value);
+        const result = add(num1, num2);
+        document.getElementById('calc-result').textContent = `Result: ${result}`;
+    });
 
-// Using validator
-console.log('Email validation:', validateEmail('test@example.com'));
-console.log('Validator state:', validatorState);
+    document.getElementById('subtract-btn').addEventListener('click', () => {
+        const num1 = parseFloat(document.getElementById('num1').value);
+        const num2 = parseFloat(document.getElementById('num2').value);
+        const result = subtract(num1, num2);
+        document.getElementById('calc-result').textContent = `Result: ${result}`;
+    });
 
-// Using formatter
-console.log('Formatted currency:', formatCurrency(99.99));
-console.log('Formatted percent:', formatPercent(0.156));
+    // Formatter functionality
+    document.getElementById('format-currency-btn').addEventListener('click', () => {
+        const amount = parseFloat(document.getElementById('amount').value);
+        const formatted = formatCurrency(amount);
+        document.getElementById('format-result').textContent = `Result: ${formatted}`;
+    });
 
-// All configs are now separate and clearly named
-console.log('Configs:', {
-    utils: utilsConfig,
-    calculator: calculatorConfig,
-    formatter: formatterConfig
+    document.getElementById('format-percent-btn').addEventListener('click', () => {
+        const percent = parseFloat(document.getElementById('percent').value);
+        const formatted = formatPercent(percent);
+        document.getElementById('format-result').textContent = `Result: ${formatted}`;
+    });
+
+    // Validator functionality
+    document.getElementById('validate-email-btn').addEventListener('click', () => {
+        const email = document.getElementById('email').value;
+        const isValid = validateEmail(email);
+        const resultEl = document.getElementById('validate-result');
+        resultEl.textContent = isValid
+            ? `Email is valid ✓`
+            : `Email is invalid ✗`;
+        resultEl.className = isValid ? 'result valid' : 'result invalid';
+    });
+
+    document.getElementById('validate-phone-btn').addEventListener('click', () => {
+        const phone = document.getElementById('phone').value;
+        const isValid = validatePhone(phone);
+        const resultEl = document.getElementById('validate-result');
+        resultEl.textContent = isValid
+            ? `Phone is valid ✓`
+            : `Phone is invalid ✗`;
+        resultEl.className = isValid ? 'result valid' : 'result invalid';
+    });
+
+    // Log configuration values
+    console.log('Configs:', {
+        utils: utilsConfig,
+        calculator: calculatorConfig,
+        formatter: formatterConfig,
+        validator: validatorState
+    });
+
+    // Trigger initial calculations to populate results
+    document.getElementById('add-btn').click();
+    document.getElementById('format-currency-btn').click();
+    document.getElementById('validate-email-btn').click();
 });

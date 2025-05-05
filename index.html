@@ -1,10 +1,231 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Multiple Files Loading Demo - Modules</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ModuleBundle Demo App</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --danger-color: #e74c3c;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: var(--light-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--light-color);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        .app-version {
+            color: var(--dark-color);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: var(--dark-color);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .result {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .valid {
+            color: var(--secondary-color);
+        }
+
+        .invalid {
+            color: var(--danger-color);
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        .info-display {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            text-align: center;
+            flex: 1;
+            margin: 0 5px;
+        }
+
+        .info-label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            color: var(--dark-color);
+        }
+
+        .info-value {
+            font-size: 1.2rem;
+        }
+    </style>
 </head>
 <body>
-    <h1>Check the console for results</h1>
+    <div class="container">
+        <header>
+            <h1 id="app-name">ModuleBundle Demo</h1>
+            <div class="app-version" id="app-version"></div>
+            <div id="current-date"></div>
+        </header>
+
+        <div class="info-display">
+            <div class="info-item">
+                <span class="info-label">Standard Date</span>
+                <span class="info-value" id="standard-date"></span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">ISO Date</span>
+                <span class="info-value" id="iso-date"></span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Calculator</h2>
+            <div class="input-group">
+                <label for="num1">First Number</label>
+                <input type="number" id="num1" placeholder="Enter first number" value="10">
+            </div>
+            <div class="input-group">
+                <label for="num2">Second Number</label>
+                <input type="number" id="num2" placeholder="Enter second number" value="5">
+            </div>
+            <div class="buttons">
+                <button id="add-btn">Add</button>
+                <button id="subtract-btn">Subtract</button>
+            </div>
+            <div class="result" id="calc-result">Result: </div>
+        </div>
+
+        <div class="card">
+            <h2>Formatter</h2>
+            <div class="input-group">
+                <label for="amount">Amount</label>
+                <input type="number" id="amount" placeholder="Enter an amount" step="0.01" value="99.99">
+            </div>
+            <div class="input-group">
+                <label for="percent">Decimal Value (for percentage)</label>
+                <input type="number" id="percent" placeholder="Enter a decimal" step="0.01" value="0.156">
+            </div>
+            <div class="buttons">
+                <button id="format-currency-btn">Format as Currency</button>
+                <button id="format-percent-btn">Format as Percentage</button>
+            </div>
+            <div class="result" id="format-result">Result: </div>
+        </div>
+
+        <div class="card">
+            <h2>Validator</h2>
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Enter email to validate" value="test@example.com">
+            </div>
+            <div class="input-group">
+                <label for="phone">Phone (10 digits)</label>
+                <input type="tel" id="phone" placeholder="Enter phone to validate" value="1234567890">
+            </div>
+            <div class="buttons">
+                <button id="validate-email-btn">Validate Email</button>
+                <button id="validate-phone-btn">Validate Phone</button>
+            </div>
+            <div class="result" id="validate-result">Result: </div>
+        </div>
+
+        <footer>
+            Built with modules and bundled with SimpleBundler
+        </footer>
+    </div>
 
     <script src="dist/bundle.js"></script>
 </body>
